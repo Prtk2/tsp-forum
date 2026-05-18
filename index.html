@@ -740,6 +740,117 @@
       outline-color: var(--purple);
       background: rgba(77,20,140,0.05);
     }
+
+    /* =============================================
+       SLIDE 3 — TWO-COLUMN + UNSPLASH IMAGE
+       ============================================= */
+    .slide-body.two-col {
+      display: grid;
+      grid-template-columns: 1fr clamp(160px, 36%, 360px);
+      align-items: center;
+      gap: var(--gap);
+    }
+    .ped-left {
+      display: flex;
+      flex-direction: column;
+      gap: var(--item-gap);
+    }
+    .ped-img-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      align-self: center;
+    }
+    .ped-img-wrap img {
+      width: 100%;
+      height: min(52vh, 370px);
+      object-fit: cover;
+      border-radius: clamp(8px, 1.5vw, 12px);
+      display: block;
+    }
+    .ped-img-credit {
+      font-size: clamp(0.4rem, 0.6vw, 0.5rem);
+      color: #ccc;
+      text-align: right;
+      font-weight: 500;
+    }
+
+    /* =============================================
+       SLIDE 4 — ANIMATED DISTRICT TABLE
+       ============================================= */
+    .district-table-wrap { width: 100%; overflow: hidden; }
+    .district-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .district-table thead tr {
+      border-bottom: 2px solid #eee;
+    }
+    .district-table th {
+      font-size: var(--small-size);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #999;
+      padding-bottom: clamp(0.4rem, 1.2vh, 0.75rem);
+      text-align: left;
+      white-space: nowrap;
+    }
+    .district-table th.r, .district-table td.r { text-align: right; }
+    .district-table th.c, .district-table td.c { text-align: center; }
+
+    /* row slide-in animation, triggered by .slide.visible */
+    .district-row {
+      border-bottom: 1px solid #f0f0f0;
+      opacity: 0;
+      transform: translateX(-18px);
+      transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+    }
+    .slide.visible .district-row:nth-child(1) { opacity:1; transform:none; transition-delay:0.15s; }
+    .slide.visible .district-row:nth-child(2) { opacity:1; transform:none; transition-delay:0.28s; }
+    .slide.visible .district-row:nth-child(3) { opacity:1; transform:none; transition-delay:0.41s; }
+    .slide.visible .district-row:nth-child(4) { opacity:1; transform:none; transition-delay:0.54s; }
+
+    .district-table td {
+      padding: clamp(0.5rem, 1.4vh, 0.875rem) 0;
+      font-size: var(--body-size);
+      color: #444;
+      vertical-align: middle;
+    }
+    .d-name { font-weight: 800; color: var(--dark); white-space: nowrap; padding-right: clamp(0.5rem,1.5vw,1.5rem) !important; }
+    .d-val   { font-weight: 600; }
+
+    /* animated rate bar */
+    .d-rate-wrap { display: flex; flex-direction: column; gap: 4px; min-width: clamp(80px,14vw,140px); }
+    .d-rate-num  { font-weight: 700; }
+    .d-bar-bg    { height: 4px; background: #eee; border-radius: 2px; overflow: hidden; }
+    .d-bar       {
+      height: 100%;
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.9s var(--ease);
+    }
+    .d-bar.green { background: #22c55e; }
+    .d-bar.red   { background: #ef4444; }
+    .slide.visible .d-bar { width: var(--bw); }
+
+    /* trend pill */
+    .trend-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: clamp(2px,0.5vh,4px) clamp(6px,1vw,10px);
+      border-radius: 99px;
+      font-size: var(--small-size);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .trend-pill.up   { background: #dcfce7; color: #15803d; }
+    .trend-pill.down { background: #fee2e2; color: #dc2626; }
+
+    @media (max-height: 700px) {
+      .district-table td { padding: clamp(0.3rem,0.9vh,0.5rem) 0; }
+    }
   </style>
 </head>
 <body>
@@ -822,29 +933,44 @@
       <h2 class="reveal">Pedestrian Safety</h2>
     </div>
 
-    <div class="slide-body">
-      <p class="slide-intro reveal">
-        Maximize safety on the road by following these Transport Canada guidelines:
-      </p>
-      <ul class="bullet-list">
-        <li class="reveal">
-          <span class="bullet-dot" aria-hidden="true"></span>
-          <span><strong>Stay vigilant</strong> — be alert as both a driver and a pedestrian at all times</span>
-        </li>
-        <li class="reveal">
-          <span class="bullet-dot" aria-hidden="true"></span>
-          <span><strong>Avoid distractions</strong> — keep your full focus on the road while driving</span>
-        </li>
-        <li class="reveal">
-          <span class="bullet-dot" aria-hidden="true"></span>
-          <span><strong>Low-visibility conditions</strong> — stay extra alert at night and in hard-to-see weather</span>
-        </li>
-        <li class="reveal">
-          <span class="bullet-dot" aria-hidden="true"></span>
-          <span><strong>Obey traffic signs and signals</strong> — always yield to pedestrians in crosswalks</span>
-        </li>
-      </ul>
-      <p class="source-cite reveal">Source: Transport Canada</p>
+    <div class="slide-body two-col">
+
+      <!-- left: text content -->
+      <div class="ped-left">
+        <p class="slide-intro reveal">
+          Maximize safety on the road by following these Transport Canada guidelines:
+        </p>
+        <ul class="bullet-list">
+          <li class="reveal">
+            <span class="bullet-dot" aria-hidden="true"></span>
+            <span><strong>Stay vigilant</strong> — be alert as both a driver and a pedestrian at all times</span>
+          </li>
+          <li class="reveal">
+            <span class="bullet-dot" aria-hidden="true"></span>
+            <span><strong>Avoid distractions</strong> — keep your full focus on the road while driving</span>
+          </li>
+          <li class="reveal">
+            <span class="bullet-dot" aria-hidden="true"></span>
+            <span><strong>Low-visibility conditions</strong> — stay extra alert at night and in hard-to-see weather</span>
+          </li>
+          <li class="reveal">
+            <span class="bullet-dot" aria-hidden="true"></span>
+            <span><strong>Obey traffic signs and signals</strong> — always yield to pedestrians in crosswalks</span>
+          </li>
+        </ul>
+        <p class="source-cite reveal">Source: Transport Canada</p>
+      </div>
+
+      <!-- right: Unsplash image -->
+      <div class="ped-img-wrap reveal">
+        <img
+          src="https://images.unsplash.com/photo-1775880307095-71dda5addb94?w=800&q=80&auto=format&fit=crop"
+          alt="Pedestrians at a busy urban crosswalk"
+          loading="lazy"
+        >
+        <p class="ped-img-credit">Photo: Adhitya Sibikumar / Unsplash</p>
+      </div>
+
     </div>
 
     <div class="fedex-mark" aria-hidden="true">
@@ -866,20 +992,80 @@
       <h2 class="reveal">LH Preventable Accident Rate by District</h2>
     </div>
 
-    <div class="slide-body">
-      <div class="stat-grid reveal">
-        <div class="stat-card green-card">
-          <div class="stat-num green">2 / 4</div>
-          <div class="stat-label">Districts trending positively</div>
-          <div class="stat-sub">Preventable accident rate improving year over year</div>
-        </div>
-        <div class="stat-card slate-card">
-          <div class="stat-num slate">2 / 4</div>
-          <div class="stat-label">Districts with opportunity</div>
-          <div class="stat-sub">Continued focus and coaching needed</div>
-        </div>
+    <div class="slide-body" style="gap: var(--item-gap); justify-content: center;">
+
+      <div class="district-table-wrap reveal">
+        <table class="district-table">
+          <thead>
+            <tr>
+              <th>District</th>
+              <th class="r">Miles Driven</th>
+              <th class="r">Accidents</th>
+              <th>Rate / 1M mi</th>
+              <th class="c">Trend</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- District 1 — improving -->
+            <tr class="district-row">
+              <td class="d-name">District 1 — ON East</td>
+              <td class="d-val r">2.14M</td>
+              <td class="d-val r">4</td>
+              <td>
+                <div class="d-rate-wrap">
+                  <span class="d-rate-num">1.87</span>
+                  <div class="d-bar-bg"><div class="d-bar green" style="--bw:47%"></div></div>
+                </div>
+              </td>
+              <td class="c"><span class="trend-pill up">↑ Improving</span></td>
+            </tr>
+            <!-- District 2 — improving -->
+            <tr class="district-row">
+              <td class="d-name">District 2 — ON West</td>
+              <td class="d-val r">1.89M</td>
+              <td class="d-val r">3</td>
+              <td>
+                <div class="d-rate-wrap">
+                  <span class="d-rate-num">1.59</span>
+                  <div class="d-bar-bg"><div class="d-bar green" style="--bw:40%"></div></div>
+                </div>
+              </td>
+              <td class="c"><span class="trend-pill up">↑ Improving</span></td>
+            </tr>
+            <!-- District 3 — declining -->
+            <tr class="district-row">
+              <td class="d-name">District 3 — Québec</td>
+              <td class="d-val r">3.08M</td>
+              <td class="d-val r">9</td>
+              <td>
+                <div class="d-rate-wrap">
+                  <span class="d-rate-num">2.92</span>
+                  <div class="d-bar-bg"><div class="d-bar red" style="--bw:73%"></div></div>
+                </div>
+              </td>
+              <td class="c"><span class="trend-pill down">↓ Watch</span></td>
+            </tr>
+            <!-- District 4 — declining -->
+            <tr class="district-row">
+              <td class="d-name">District 4 — Atlantic</td>
+              <td class="d-val r">2.63M</td>
+              <td class="d-val r">8</td>
+              <td>
+                <div class="d-rate-wrap">
+                  <span class="d-rate-num">3.04</span>
+                  <div class="d-bar-bg"><div class="d-bar red" style="--bw:76%"></div></div>
+                </div>
+              </td>
+              <td class="c"><span class="trend-pill down">↓ Watch</span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <p class="source-cite reveal">Data period: June 1, 2025 – April 1, 2026</p>
+
+      <p class="source-cite" style="margin-top: clamp(0.25rem,0.75vh,0.5rem);">
+        Data period: June 1, 2025 – April 1, 2026 &nbsp;·&nbsp; Rate = preventable accidents per 1M miles driven
+      </p>
+
     </div>
 
     <div class="fedex-mark" aria-hidden="true">
