@@ -823,7 +823,7 @@
     /* animated rate bar */
     .d-rate-wrap { display: flex; flex-direction: column; gap: 4px; min-width: clamp(80px,14vw,140px); }
     .d-rate-num  { font-weight: 700; }
-    .d-bar-bg    { height: 4px; background: #eee; border-radius: 2px; overflow: hidden; }
+    .d-bar-bg    { height: 4px; background: #eee; border-radius: 2px; position: relative; }
     .d-bar       {
       height: 100%;
       border-radius: 2px;
@@ -851,6 +851,97 @@
     @media (max-height: 700px) {
       .district-table td { padding: clamp(0.3rem,0.9vh,0.5rem) 0; }
     }
+
+    /* =============================================
+       SLIDE 3 — BACKGROUND IMAGE OVERLAY
+       Image sits behind text via a white overlay
+       ============================================= */
+    .slide-body.img-bg {
+      position: relative;
+      background-image: url('https://images.unsplash.com/photo-1775880307095-71dda5addb94?w=1400&q=75&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+    }
+    .slide-body.img-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.86);
+      z-index: 0;
+    }
+    /* lift all direct children above the overlay */
+    .slide-body.img-bg > * { position: relative; z-index: 1; }
+
+    /* =============================================
+       SLIDE 4 — OVERALL SUMMARY STRIP
+       ============================================= */
+    .overall-strip {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: clamp(0.5rem, 1.5vw, 1.5rem);
+      background: var(--light-bg);
+      border-radius: clamp(6px, 1vw, 10px);
+      padding: clamp(0.5rem, 1.4vh, 0.875rem) clamp(0.875rem, 2vw, 1.75rem);
+      border-left: 4px solid var(--purple);
+    }
+    .os-label {
+      font-size: var(--small-size);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #999;
+      white-space: nowrap;
+    }
+    .os-val {
+      font-size: var(--body-size);
+      font-weight: 700;
+      color: var(--dark);
+      white-space: nowrap;
+    }
+    .os-val.bad  { color: #dc2626; }
+    .os-val.goal { color: #16a34a; }
+    .os-sep { color: #ddd; }
+
+    /* =============================================
+       SLIDE 4 — ATTAINMENT DOT, SPARKLINE, TREND
+       ============================================= */
+    .attainment-dot {
+      width: clamp(10px, 1.4vw, 14px);
+      height: clamp(10px, 1.4vw, 14px);
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .attainment-dot.red   { background: #ef4444; }
+    .attainment-dot.green { background: #22c55e; }
+
+    /* goal marker line on the rate bar */
+    .d-goal-marker {
+      position: absolute;
+      top: -4px; bottom: -4px;
+      width: 2px;
+      background: var(--purple);
+      left: var(--gp);
+      border-radius: 1px;
+      z-index: 2;
+    }
+
+    .trend-arrow {
+      font-size: clamp(1rem, 2vw, 1.5rem);
+      font-weight: 900;
+      line-height: 1;
+      display: inline-block;
+    }
+    .trend-arrow.down { color: #16a34a; }
+    .trend-arrow.up   { color: #dc2626; }
+    .trend-arrow.flat {
+      color: #ca8a04;
+      font-size: clamp(0.65rem, 1.1vw, 0.875rem);
+      letter-spacing: -1px;
+    }
+
+    .sparkline { overflow: visible; display: block; }
   </style>
 </head>
 <body>
@@ -933,44 +1024,29 @@
       <h2 class="reveal">Pedestrian Safety</h2>
     </div>
 
-    <div class="slide-body two-col">
-
-      <!-- left: text content -->
-      <div class="ped-left">
-        <p class="slide-intro reveal">
-          Maximize safety on the road by following these Transport Canada guidelines:
-        </p>
-        <ul class="bullet-list">
-          <li class="reveal">
-            <span class="bullet-dot" aria-hidden="true"></span>
-            <span><strong>Stay vigilant</strong> — be alert as both a driver and a pedestrian at all times</span>
-          </li>
-          <li class="reveal">
-            <span class="bullet-dot" aria-hidden="true"></span>
-            <span><strong>Avoid distractions</strong> — keep your full focus on the road while driving</span>
-          </li>
-          <li class="reveal">
-            <span class="bullet-dot" aria-hidden="true"></span>
-            <span><strong>Low-visibility conditions</strong> — stay extra alert at night and in hard-to-see weather</span>
-          </li>
-          <li class="reveal">
-            <span class="bullet-dot" aria-hidden="true"></span>
-            <span><strong>Obey traffic signs and signals</strong> — always yield to pedestrians in crosswalks</span>
-          </li>
-        </ul>
-        <p class="source-cite reveal">Source: Transport Canada</p>
-      </div>
-
-      <!-- right: Unsplash image -->
-      <div class="ped-img-wrap reveal">
-        <img
-          src="https://images.unsplash.com/photo-1775880307095-71dda5addb94?w=800&q=80&auto=format&fit=crop"
-          alt="Pedestrians at a busy urban crosswalk"
-          loading="lazy"
-        >
-        <p class="ped-img-credit">Photo: Adhitya Sibikumar / Unsplash</p>
-      </div>
-
+    <div class="slide-body img-bg">
+      <p class="slide-intro reveal">
+        Maximize safety on the road by following these Transport Canada guidelines:
+      </p>
+      <ul class="bullet-list">
+        <li class="reveal">
+          <span class="bullet-dot" aria-hidden="true"></span>
+          <span><strong>Stay vigilant</strong> — be alert as both a driver and a pedestrian at all times</span>
+        </li>
+        <li class="reveal">
+          <span class="bullet-dot" aria-hidden="true"></span>
+          <span><strong>Avoid distractions</strong> — keep your full focus on the road while driving</span>
+        </li>
+        <li class="reveal">
+          <span class="bullet-dot" aria-hidden="true"></span>
+          <span><strong>Low-visibility conditions</strong> — stay extra alert at night and in hard-to-see weather</span>
+        </li>
+        <li class="reveal">
+          <span class="bullet-dot" aria-hidden="true"></span>
+          <span><strong>Obey traffic signs and signals</strong> — always yield to pedestrians in crosswalks</span>
+        </li>
+      </ul>
+      <p class="source-cite reveal">Source: Transport Canada &nbsp;·&nbsp; Photo: A. Sibikumar / Unsplash</p>
     </div>
 
     <div class="fedex-mark" aria-hidden="true">
@@ -994,77 +1070,136 @@
 
     <div class="slide-body" style="gap: var(--item-gap); justify-content: center;">
 
+      <!-- FY26 overall summary strip -->
+      <div class="overall-strip reveal">
+        <span class="os-label">FY26 Overall</span>
+        <span class="os-sep">|</span>
+        <span class="os-label">Miles</span>
+        <span class="os-val">34,495,400</span>
+        <span class="os-sep">|</span>
+        <span class="os-label">Accidents</span>
+        <span class="os-val">22</span>
+        <span class="os-sep">|</span>
+        <span class="os-label">Actual Rate</span>
+        <span class="os-val bad">0.64</span>
+        <span class="os-sep">|</span>
+        <span class="os-label">Goal Rate</span>
+        <span class="os-val goal">0.58</span>
+      </div>
+
+      <!-- district table — real FY26 data -->
       <div class="district-table-wrap reveal">
         <table class="district-table">
           <thead>
             <tr>
               <th>District</th>
-              <th class="r">Miles Driven</th>
+              <th class="r">Miles</th>
               <th class="r">Accidents</th>
-              <th>Rate / 1M mi</th>
+              <th>Rate &nbsp;<span style="font-weight:400;color:#bbb;font-size:0.85em">goal 0.58 ▾</span></th>
+              <th class="c">Attainment</th>
+              <th class="c">Sparkline</th>
               <th class="c">Trend</th>
             </tr>
           </thead>
           <tbody>
-            <!-- District 1 — improving -->
+
+            <!-- ED — above goal, rate declining (green ↓) -->
             <tr class="district-row">
-              <td class="d-name">District 1 — ON East</td>
-              <td class="d-val r">2.14M</td>
-              <td class="d-val r">4</td>
+              <td class="d-name">ED</td>
+              <td class="d-val r">8,069,748</td>
+              <td class="d-val r">6</td>
               <td>
                 <div class="d-rate-wrap">
-                  <span class="d-rate-num">1.87</span>
-                  <div class="d-bar-bg"><div class="d-bar green" style="--bw:47%"></div></div>
+                  <span class="d-rate-num">0.74</span>
+                  <div class="d-bar-bg">
+                    <div class="d-bar red" style="--bw:74%"></div>
+                    <div class="d-goal-marker" style="--gp:58%"></div>
+                  </div>
                 </div>
               </td>
-              <td class="c"><span class="trend-pill up">↑ Improving</span></td>
-            </tr>
-            <!-- District 2 — improving -->
-            <tr class="district-row">
-              <td class="d-name">District 2 — ON West</td>
-              <td class="d-val r">1.89M</td>
-              <td class="d-val r">3</td>
-              <td>
-                <div class="d-rate-wrap">
-                  <span class="d-rate-num">1.59</span>
-                  <div class="d-bar-bg"><div class="d-bar green" style="--bw:40%"></div></div>
-                </div>
+              <td class="c"><span class="attainment-dot red"></span></td>
+              <td class="c">
+                <svg class="sparkline" width="64" height="22" viewBox="0 0 64 22">
+                  <path d="M0,7 C10,4 18,12 30,9 C38,7 50,11 64,14" stroke="#999" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                </svg>
               </td>
-              <td class="c"><span class="trend-pill up">↑ Improving</span></td>
+              <td class="c"><span class="trend-arrow down">↓</span></td>
             </tr>
-            <!-- District 3 — declining -->
+
+            <!-- CD — above goal, rate rising (red ↑) -->
             <tr class="district-row">
-              <td class="d-name">District 3 — Québec</td>
-              <td class="d-val r">3.08M</td>
+              <td class="d-name">CD</td>
+              <td class="d-val r">11,010,587</td>
               <td class="d-val r">9</td>
               <td>
                 <div class="d-rate-wrap">
-                  <span class="d-rate-num">2.92</span>
-                  <div class="d-bar-bg"><div class="d-bar red" style="--bw:73%"></div></div>
+                  <span class="d-rate-num">0.82</span>
+                  <div class="d-bar-bg">
+                    <div class="d-bar red" style="--bw:82%"></div>
+                    <div class="d-goal-marker" style="--gp:58%"></div>
+                  </div>
                 </div>
               </td>
-              <td class="c"><span class="trend-pill down">↓ Watch</span></td>
+              <td class="c"><span class="attainment-dot red"></span></td>
+              <td class="c">
+                <svg class="sparkline" width="64" height="22" viewBox="0 0 64 22">
+                  <path d="M0,16 C14,14 28,11 42,7 L64,4" stroke="#999" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                </svg>
+              </td>
+              <td class="c"><span class="trend-arrow up">↑</span></td>
             </tr>
-            <!-- District 4 — declining -->
+
+            <!-- WD — below goal, rate rising (red ↑) -->
             <tr class="district-row">
-              <td class="d-name">District 4 — Atlantic</td>
-              <td class="d-val r">2.63M</td>
-              <td class="d-val r">8</td>
+              <td class="d-name">WD</td>
+              <td class="d-val r">14,951,215</td>
+              <td class="d-val r">7</td>
               <td>
                 <div class="d-rate-wrap">
-                  <span class="d-rate-num">3.04</span>
-                  <div class="d-bar-bg"><div class="d-bar red" style="--bw:76%"></div></div>
+                  <span class="d-rate-num">0.47</span>
+                  <div class="d-bar-bg">
+                    <div class="d-bar green" style="--bw:47%"></div>
+                    <div class="d-goal-marker" style="--gp:58%"></div>
+                  </div>
                 </div>
               </td>
-              <td class="c"><span class="trend-pill down">↓ Watch</span></td>
+              <td class="c"><span class="attainment-dot green"></span></td>
+              <td class="c">
+                <svg class="sparkline" width="64" height="22" viewBox="0 0 64 22">
+                  <path d="M0,5 C16,6 32,8 48,11 L64,13" stroke="#999" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                </svg>
+              </td>
+              <td class="c"><span class="trend-arrow up">↑</span></td>
             </tr>
+
+            <!-- TR — below goal, flat (yellow ─) -->
+            <tr class="district-row">
+              <td class="d-name">TR</td>
+              <td class="d-val r">463,850</td>
+              <td class="d-val r">0</td>
+              <td>
+                <div class="d-rate-wrap">
+                  <span class="d-rate-num">0.00</span>
+                  <div class="d-bar-bg">
+                    <div class="d-bar green" style="--bw:0%"></div>
+                    <div class="d-goal-marker" style="--gp:58%"></div>
+                  </div>
+                </div>
+              </td>
+              <td class="c"><span class="attainment-dot green"></span></td>
+              <td class="c">
+                <svg class="sparkline" width="64" height="22" viewBox="0 0 64 22">
+                  <path d="M0,15 L64,15" stroke="#ccc" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                </svg>
+              </td>
+              <td class="c"><span class="trend-arrow flat">━</span></td>
+            </tr>
+
           </tbody>
         </table>
       </div>
 
-      <p class="source-cite" style="margin-top: clamp(0.25rem,0.75vh,0.5rem);">
-        Data period: June 1, 2025 – April 1, 2026 &nbsp;·&nbsp; Rate = preventable accidents per 1M miles driven
-      </p>
+      <p class="source-cite">Data period: June 1, 2025 – April 1, 2026 &nbsp;·&nbsp; Rate = preventable accidents per 1M miles &nbsp;·&nbsp; Purple marker = goal (0.58)</p>
 
     </div>
 
