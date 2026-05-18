@@ -1,1 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LH Service Provider Forum — Canada, May 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+  <style>
+    /* =============================================
+       CSS CUSTOM PROPERTIES
+       Change :root variables to retheme entire deck
+       ============================================= */
+    :root {
+      --purple:       #4D148C;
+      --orange:       #FF6600;
+      --dark:         #0a0a0a;
+      --white:        #FFFFFF;
+      --light-bg:     #f7f7f7;
+      --muted:        #888888;
+
+      /* Typography — all clamp() */
+      --title-size:    clamp(1.75rem, 4.5vw,  3.75rem);
+      --section-size:  clamp(2rem,    6vw,     5.5rem);
+      --h2-size:       clamp(1.2rem,  3vw,     2.25rem);
+      --h3-size:       clamp(1rem,    2vw,     1.5rem);
+      --body-size:     clamp(0.75rem, 1.4vw,   1.05rem);
+      --small-size:    clamp(0.6rem,  0.95vw,  0.75rem);
+
+      /* Spacing — all clamp() */
+      --pad:           clamp(1.5rem,  4vw,     4rem);
+      --gap:           clamp(0.75rem, 2vh,     1.75rem);
+      --item-gap:      clamp(0.4rem,  1vh,     1rem);
+
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* =============================================
+       VIEWPORT BASE (mandatory — included in full)
+       ============================================= */
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
+    }
+    html {
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+    .slide {
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .slide-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-height: 100%;
+      overflow: hidden;
+      padding: var(--pad);
+    }
+    img, .image-container {
+      max-width: 100%;
+      max-height: min(50vh, 400px);
+      object-fit: contain;
+    }
+    @media (max-height: 700px) {
+      :root {
+        --pad:         clamp(0.75rem, 3vw,   2rem);
+        --gap:         clamp(0.4rem,  1.5vw, 1rem);
+        --title-size:  clamp(1.25rem, 4.5vw, 2.5rem);
+        --h2-size:     clamp(1rem,    3vw,   1.75rem);
+        --section-size:clamp(1.5rem,  5vw,   3.5rem);
+      }
+    }
+    @media (max-height: 600px) {
+      :root {
+        --pad:         clamp(0.5rem, 2.5vw, 1.5rem);
+        --gap:         clamp(0.3rem, 1vw,   0.75rem);
+        --title-size:  clamp(1.1rem, 4vw,   2rem);
+        --body-size:   clamp(0.7rem, 1.2vw, 0.95rem);
+      }
+      .nav-dots, .decorative { display: none; }
+    }
+    @media (max-height: 500px) {
+      :root {
+        --pad:         clamp(0.4rem, 2vw,   1rem);
+        --title-size:  clamp(1rem,   3.5vw, 1.5rem);
+        --h2-size:     clamp(0.9rem, 2.5vw, 1.25rem);
+        --body-size:   clamp(0.65rem,1vw,   0.85rem);
+      }
+    }
+    @media (max-width: 600px) {
+      :root { --title-size: clamp(1.25rem, 7vw, 2.5rem); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s  !important;
+      }
+      html { scroll-behavior: auto; }
+    }
+
+    /* =============================================
+       BASE RESET
+       ============================================= */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: #1a1a1a;
+      color: var(--dark);
+    }
+
+    /* =============================================
+       SCROLL-TRIGGERED REVEAL
+       JS adds .visible to .slide when in viewport
+       ============================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+    }
+    .slide.visible .reveal { opacity: 1; transform: translateY(0); }
+    /* stagger delays for sequential children */
+    .slide.visible .reveal:nth-child(1) { transition-delay: 0.05s; }
+    .slide.visible .reveal:nth-child(2) { transition-delay: 0.15s; }
+    .slide.visible .reveal:nth-child(3) { transition-delay: 0.25s; }
+    .slide.visible .reveal:nth-child(4) { transition-delay: 0.35s; }
+    .slide.visible .reveal:nth-child(5) { transition-delay: 0.45s; }
+    .slide.visible .reveal:nth-child(6) { transition-delay: 0.55s; }
+    /* bullet-list items stagger independently */
+    .slide.visible .bullet-list .reveal:nth-child(1) { transition-delay: 0.2s; }
+    .slide.visible .bullet-list .reveal:nth-child(2) { transition-delay: 0.32s; }
+    .slide.visible .bullet-list .reveal:nth-child(3) { transition-delay: 0.44s; }
+    .slide.visible .bullet-list .reveal:nth-child(4) { transition-delay: 0.56s; }
+
+    /* =============================================
+       PROGRESS BAR
+       ============================================= */
+    .progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      width: 0%;
+      background: var(--orange);
+      z-index: 1000;
+      transition: width 0.25s ease;
+    }
+
+    /* =============================================
+       NAV DOTS
+       ============================================= */
+    .nav-dots {
+      position: fixed;
+      right: clamp(0.75rem, 2vw, 2rem);
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(6px, 1vh, 10px);
+      z-index: 100;
+    }
+    .nav-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(0,0,0,0.15);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .nav-dots.on-dark .nav-dot {
+      background: rgba(255,255,255,0.25);
+      border-color: rgba(255,255,255,0.2);
+    }
+    .nav-dot.active {
+      background: var(--orange) !important;
+      border-color: var(--orange) !important;
+      transform: scale(1.4);
+    }
+
+    /* =============================================
+       SHARED CHROME — FedEx mark + confidentiality
+       These appear on every slide
+       ============================================= */
+    .fedex-mark {
+      position: absolute;
+      bottom: clamp(0.875rem, 2.25vh, 1.875rem);
+      left: var(--pad);
+      z-index: 10;
+      line-height: 1;
+    }
+    .fedex-mark .brand-word {
+      font-size: clamp(0.85rem, 1.7vw, 1.3rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .fedex-mark .fed { color: var(--purple); }
+    .fedex-mark .ex  { color: var(--orange); }
+    .fedex-mark .brand-expr {
+      display: block;
+      font-size: clamp(0.42rem, 0.72vw, 0.56rem);
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #aaa;
+      margin-top: 2px;
+    }
+    /* light variant for dark-background slides */
+    .fedex-mark.on-dark .fed  { color: #c9a0ff; }
+    .fedex-mark.on-dark .ex   { color: var(--orange); }
+    .fedex-mark.on-dark .brand-expr { color: rgba(255,255,255,0.35); }
+
+    .conf-footer {
+      position: absolute;
+      bottom: clamp(0.875rem, 2.25vh, 1.875rem);
+      right: var(--pad);
+      font-size: clamp(0.42rem, 0.7vw, 0.56rem);
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #c0c0c0;
+      z-index: 10;
+    }
+    .conf-footer.on-dark { color: rgba(255,255,255,0.28); }
+
+
+    /* =============================================
+       SLIDE 1 — TITLE
+       Purple top band (40%) + white bottom (60%)
+       ============================================= */
+    .title-slide {
+      display: grid !important;
+      grid-template-rows: 40% 60%;
+    }
+    .title-top {
+      background: var(--purple);
+      display: flex;
+      align-items: flex-end;
+      padding: var(--pad);
+      padding-bottom: clamp(1rem, 2.5vh, 2rem);
+      position: relative;
+    }
+    /* orange accent bar separating bands */
+    .title-top::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: clamp(3px, 0.45vh, 5px);
+      background: var(--orange);
+    }
+    .title-brand {
+      font-size: clamp(1.35rem, 2.8vw, 2.25rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: white;
+    }
+    .title-brand .ex { color: var(--orange); }
+    .title-brand-sub {
+      display: block;
+      font-size: var(--small-size);
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-top: 4px;
+    }
+    /* decorative dot grid — top-right of purple band */
+    .dot-grid {
+      position: absolute;
+      top: clamp(1rem, 2.5vh, 2.5rem);
+      right: var(--pad);
+      display: grid;
+      grid-template-columns: repeat(6, 7px);
+      gap: clamp(5px, 0.8vw, 9px);
+    }
+    .dot-grid span {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+    }
+    .title-bottom {
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--pad);
+      padding-top: clamp(1.25rem, 3vh, 2.75rem);
+      gap: var(--item-gap);
+    }
+    .title-bottom h1 {
+      font-size: var(--title-size);
+      font-weight: 800;
+      color: var(--dark);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+    .title-meta {
+      display: flex;
+      align-items: center;
+      gap: clamp(0.6rem, 1.5vw, 1.25rem);
+      margin-top: clamp(0.5rem, 1.5vh, 1.25rem);
+    }
+    .title-meta-bar {
+      width: 4px;
+      height: clamp(1.5rem, 3.5vh, 2.75rem);
+      background: var(--orange);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .title-meta-text {
+      font-size: clamp(0.68rem, 1.25vw, 0.875rem);
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .title-conf {
+      font-size: clamp(0.5rem, 0.82vw, 0.62rem);
+      font-weight: 600;
+      color: #ccc;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: clamp(0.5rem, 1.5vh, 1.25rem);
+    }
+
+
+    /* =============================================
+       SECTION DIVIDER SLIDES (2 & 6)
+       Full purple with large centered label
+       ============================================= */
+    .section-slide {
+      background: var(--purple);
+      justify-content: center;
+      align-items: center;
+    }
+    .section-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: clamp(0.875rem, 2.5vh, 2rem);
+      position: relative;
+      z-index: 1;
+    }
+    .section-eyebrow {
+      font-size: var(--small-size);
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.42);
+    }
+    .section-rule {
+      width: clamp(2.25rem, 5vw, 4rem);
+      height: 3px;
+      background: var(--orange);
+    }
+    .section-slide h2 {
+      font-size: var(--section-size);
+      font-weight: 800;
+      color: white;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    /* large ghost number behind section title */
+    .ghost {
+      position: absolute;
+      font-size: clamp(7rem, 22vw, 20rem);
+      font-weight: 800;
+      color: rgba(255,255,255,0.042);
+      letter-spacing: -0.06em;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+
+
+    /* =============================================
+       CONTENT SLIDES (3, 4, 5, 7, 8)
+       Small purple header + white body
+       ============================================= */
+    .content-slide {
+      display: grid !important;
+      grid-template-rows: auto 1fr;
+    }
+    .slide-header {
+      background: var(--purple);
+      padding: clamp(0.875rem, 2.25vh, 1.875rem) var(--pad);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.2rem, 0.6vh, 0.5rem);
+      position: relative;
+    }
+    .slide-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: clamp(2px, 0.35vh, 4px);
+      background: var(--orange);
+    }
+    .header-label {
+      font-size: var(--small-size);
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.42);
+    }
+    .slide-header h2 {
+      font-size: var(--h2-size);
+      font-weight: 800;
+      color: white;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+    }
+    .slide-body {
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--pad);
+      gap: var(--gap);
+      overflow: hidden;
+      max-height: 100%;
+    }
+
+    /* bullet list */
+    .bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--item-gap);
+    }
+    .bullet-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: clamp(0.6rem, 1.3vw, 1rem);
+      font-size: var(--body-size);
+      color: #333;
+      line-height: 1.5;
+    }
+    .bullet-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--orange);
+      flex-shrink: 0;
+      margin-top: 0.38em;
+    }
+    .bullet-list strong { color: var(--purple); font-weight: 700; }
+
+    /* source citation */
+    .source-cite {
+      font-size: var(--small-size);
+      color: #bbb;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    /* intro text above bullets */
+    .slide-intro {
+      font-size: var(--body-size);
+      color: #555;
+      font-weight: 500;
+      line-height: 1.45;
+    }
+
+
+    /* =============================================
+       SLIDE 4 — STAT GRID
+       ============================================= */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(0.75rem, 2vw, 1.5rem);
+    }
+    .stat-card {
+      background: var(--light-bg);
+      border-radius: clamp(8px, 1.5vw, 14px);
+      padding: clamp(1rem, 2.5vw, 2rem);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.35rem, 0.9vh, 0.7rem);
+      border-left: 4px solid var(--orange);
+    }
+    .stat-card.green-card { border-left-color: #22c55e; }
+    .stat-card.slate-card { border-left-color: #94a3b8; }
+    .stat-num {
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--purple);
+    }
+    .stat-num.green { color: #16a34a; }
+    .stat-num.slate { color: #64748b; }
+    .stat-label {
+      font-size: var(--body-size);
+      font-weight: 700;
+      color: #333;
+      line-height: 1.3;
+    }
+    .stat-sub {
+      font-size: var(--small-size);
+      color: #888;
+      font-weight: 500;
+    }
+
+
+    /* =============================================
+       SLIDE 5 — FMCSA CALLOUT
+       Quote block + big stat
+       ============================================= */
+    .quote-block {
+      background: var(--light-bg);
+      border-left: 4px solid var(--purple);
+      padding: clamp(0.75rem, 2vw, 1.5rem) clamp(1rem, 2.5vw, 2rem);
+      border-radius: 0 8px 8px 0;
+    }
+    .quote-block p {
+      font-size: var(--body-size);
+      color: #444;
+      line-height: 1.6;
+      font-style: italic;
+    }
+    .quote-source {
+      font-size: var(--small-size);
+      font-weight: 700;
+      color: var(--purple);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: clamp(0.4rem, 0.8vh, 0.6rem);
+    }
+    .stat-callout-row {
+      display: flex;
+      align-items: center;
+      gap: clamp(1rem, 2.5vw, 2rem);
+    }
+    .big-stat {
+      font-size: clamp(2.5rem, 7vw, 5.5rem);
+      font-weight: 800;
+      color: var(--orange);
+      letter-spacing: -0.05em;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .stat-callout-desc {
+      font-size: var(--body-size);
+      color: #444;
+      line-height: 1.55;
+    }
+    .stat-callout-desc strong { color: var(--purple); font-weight: 700; }
+
+
+    /* =============================================
+       SLIDE 8 — SAVE THE DATES INFO CARD
+       ============================================= */
+    .info-card {
+      background: var(--white);
+      border: 1px solid #e4e4e4;
+      border-radius: clamp(10px, 1.75vw, 16px);
+      padding: clamp(1.25rem, 3vw, 2.5rem);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.875rem, 2vh, 1.75rem);
+      max-width: min(90vw, 680px);
+      box-shadow: 0 4px 28px rgba(0,0,0,0.06);
+    }
+    .info-card-head {
+      display: flex;
+      align-items: center;
+      gap: clamp(0.75rem, 1.5vw, 1.25rem);
+    }
+    .info-card-badge {
+      width:  clamp(2.25rem, 4.5vw, 3.5rem);
+      height: clamp(2.25rem, 4.5vw, 3.5rem);
+      background: var(--purple);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: clamp(0.875rem, 1.75vw, 1.375rem);
+    }
+    .info-card-title {
+      font-size: var(--h3-size);
+      font-weight: 800;
+      color: var(--dark);
+      line-height: 1.2;
+    }
+    .info-rows {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.5rem, 1.25vh, 1rem);
+    }
+    .info-row {
+      display: flex;
+      align-items: baseline;
+      gap: clamp(0.5rem, 1.5vw, 1rem);
+    }
+    .info-row-label {
+      font-size: var(--small-size);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--orange);
+      min-width: clamp(5rem, 9vw, 7.5rem);
+      flex-shrink: 0;
+    }
+    .info-row-value {
+      font-size: var(--body-size);
+      font-weight: 600;
+      color: #333;
+    }
+
+
+    /* =============================================
+       SLIDES 9 & 10 — Q&A + THANK YOU (CLOSING)
+       ============================================= */
+    .closing-slide {
+      background: var(--dark);
+      justify-content: center;
+      align-items: center;
+    }
+    .closing-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: clamp(1rem, 2.75vh, 2.25rem);
+      position: relative;
+      z-index: 1;
+    }
+    .closing-eyebrow {
+      font-size: var(--small-size);
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--orange);
+    }
+    .closing-rule {
+      width: clamp(2.5rem, 5.5vw, 4.5rem);
+      height: 3px;
+      background: var(--orange);
+    }
+    .closing-slide h2 {
+      font-size: clamp(2.5rem, 7vw, 6rem);
+      font-weight: 800;
+      color: white;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .closing-sub {
+      font-size: var(--body-size);
+      color: rgba(255,255,255,0.38);
+    }
+    /* ambient purple glows in background */
+    .bg-glow {
+      position: absolute;
+      width: clamp(200px, 40vw, 500px);
+      height: clamp(200px, 40vw, 500px);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(77,20,140,0.45) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .bg-glow.tl { top: -20%; left: -12%; }
+    .bg-glow.br { bottom: -20%; right: -12%; }
+
+    /* Q&A slide uses purple background */
+    .qa-slide {
+      background: var(--purple);
+    }
+    .qa-slide .closing-eyebrow { color: rgba(255,255,255,0.45); }
+    .qa-slide .bg-glow {
+      background: radial-gradient(circle, rgba(0,0,0,0.25) 0%, transparent 70%);
+    }
+
+
+    /* =============================================
+       INLINE EDITING
+       Hover top-left corner or press E to toggle
+       ============================================= */
+    .edit-hotzone {
+      position: fixed;
+      top: 0; left: 0;
+      width: 80px; height: 80px;
+      z-index: 10000;
+      cursor: pointer;
+    }
+    .edit-toggle {
+      position: fixed;
+      top: 16px; left: 16px;
+      z-index: 10001;
+      background: var(--purple);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-family: 'Manrope', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      letter-spacing: 0.04em;
+    }
+    .edit-toggle.show, .edit-toggle.active { opacity: 1; pointer-events: auto; }
+    .edit-toggle.active { background: #16a34a; }
+
+    .edit-banner {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(22,163,74,0.95);
+      color: white;
+      font-family: 'Manrope', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      padding: 9px;
+      z-index: 9999;
+      letter-spacing: 0.05em;
+      transform: translateY(-100%);
+      transition: transform 0.3s ease;
+    }
+    .edit-banner.active { transform: translateY(0); }
+
+    body.edit-active [contenteditable="true"] {
+      outline: 2px dashed rgba(77,20,140,0.35);
+      outline-offset: 3px;
+      border-radius: 3px;
+      cursor: text;
+    }
+    body.edit-active [contenteditable="true"]:focus {
+      outline-color: var(--purple);
+      background: rgba(77,20,140,0.05);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Progress bar (top edge) -->
+  <div class="progress-bar" id="progressBar"></div>
+
+  <!-- Navigation dots (right edge) -->
+  <nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+
+  <!-- Inline edit UI -->
+  <div class="edit-hotzone"  id="editHotzone"></div>
+  <button class="edit-toggle" id="editToggle" title="Edit mode (E)">✏ Edit</button>
+  <div class="edit-banner"  id="editBanner">Edit mode — click any text to edit &nbsp;·&nbsp; Ctrl+S to save</div>
+
+
+  <!-- ============================================================
+       SLIDE 1 — TITLE
+       ============================================================ -->
+  <section class="slide title-slide" aria-label="Title slide">
+
+    <div class="title-top">
+      <div class="reveal">
+        <span class="title-brand">
+          <span class="fed">Fed</span><span class="ex">Ex</span> Express
+        </span>
+        <span class="title-brand-sub">Canada Linehaul</span>
+      </div>
+      <!-- decorative dot grid -->
+      <div class="dot-grid decorative" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <div class="title-bottom">
+      <h1 class="reveal">Linehaul Service Provider Forum — Canada</h1>
+      <div class="title-meta reveal">
+        <div class="title-meta-bar"></div>
+        <span class="title-meta-text">May 2026 &nbsp;·&nbsp; Service Provider Forum</span>
+      </div>
+      <p class="title-conf reveal">
+        This document contains proprietary &amp; confidential information. For authorized recipients only.
+      </p>
+    </div>
+
+  </section>
+
+
+  <!-- ============================================================
+       SLIDE 2 — SECTION: SAFETY
+       ============================================================ -->
+  <section class="slide section-slide" aria-label="Safety section divider">
+
+    <span class="ghost decorative" aria-hidden="true">01</span>
+
+    <div class="section-inner">
+      <span class="section-eyebrow reveal">Section 01</span>
+      <div class="section-rule reveal" aria-hidden="true"></div>
+      <h2 class="reveal">Safety</h2>
+    </div>
+
+    <div class="fedex-mark on-dark" aria-hidden="true">
+      <span class="brand-word"><span class="fed">Fed</span><span class="ex">Ex</span></span>
+      <span class="brand-expr">Express</span>
+    </div>
+    <span class="conf-footer on-dark">May 2026 · Proprietary &amp; Confidential</span>
+
+  </section>
+
+
+  <!-- ============================================================
+       SLIDE 3 — PEDESTRIAN SAFETY
+       ============================================================ -->
+  <section class="slide content-slide" aria-label="Pedestrian safety">
+
+    <div class="slide-header">
+      <span class="header-label reveal">Safety Message</span>
+      <h2 class="reveal">Pedestrian Safety</h2>
+    </div>
+
+    <div class="slide-body">
+      <p class="slide-intro reveal">
+        Maximize safety on the road by following these Transport Canada guidelines:
+      </p>
+      <ul class="bullet-list">
+        <li class="reveal">
+          <span class="bullet-dot" aria-hidden="true"></span>
+          <span><strong>Stay vigilant</strong> — be alert as both a driver and a pedestrian at all times</span>
+        </li>
+        <li class="reveal">
+          <span class="bullet-dot" aria-hidden="true"></span>
+          <span><strong>Avoid distractions</strong> — keep your full focus on the road while driving</span>
+        </li>
+        <li class="reveal">
+          <span class="bullet-dot" aria-hidden="true"></span>
+          <span><strong>Low-visibility conditions</strong> — stay extra alert at night and in hard-to-see weather</span>
+        </li>
+        <li class="reveal">
+          <span class="bullet-dot" aria-hidden="true"></span>
+          <span><strong>Obey traffic signs and signals</strong> — always yield to pedestrians in crosswalks</span>
+        </li>
+      </ul>
+      <p class="source-cite reveal">Source: Transport Canada</p>
+    </div>
+
+    <div class="fedex-mark" aria-hidden="true">
+      <span class="brand-word"><span class="fed">Fed</span><span class="ex">Ex</span></span>
+      <span class="brand-expr">Express</span>
+    </div>
+    <span class="conf-footer">May 2026 · Proprietary &amp; Confidential</span>
+
+  </section>
+
+
+  <!-- ============================================================
+       SLIDE 4 — ACCIDENT RATE BY DISTRICT
+       ============================================================ -->
+  <section class="slide content-slide" aria-label="Preventable accident rate by district">
+
+    <div class="slide-header">
+      <span class="header-label reveal">Safety Data</span>
+      <h2 class="reveal">LH Preventable Accident Rate by District</h2>
+    </div>
+
+    <div class="slide-body">
+      <div class="stat-grid reveal">
+        <div class="stat-card green-card">
+          <div class="stat-num green">2 / 4</div>
+          <div class="stat-label">Districts trending positively</div>
+          <div class="stat-sub">Preventable accident rate improving year over year</div>
+        </div>
+        <div class="stat-card slate-card">
+          <div class="stat-num slate">2 / 4</div>
+          <div class="stat-label">Districts with opportunity</div>
+          <div class="stat-sub">Continued focus and coaching needed</div>
+        </div>
+      </div>
+      <p class="source-cite reveal">Data period: June 1, 2025 – April 1, 2026</p>
+    </div>
+
+    <div class="fedex-mark" aria-hidden="true">
+      <span class="brand-word"><span class="fed">Fed</span><span class="ex">Ex</span></span>
+      <span class="brand-expr">Express</span>
+    </div>
+    <span class="conf-footer">May 2026 · Proprietary &amp; Confidential</span>
+
+  </section>
+
+
+  <!-- ============================================================
+       SLIDE 5 — PREVENTABLE ACCIDENT MANEUVERS
+       ============================================================ -->
+  <section class="slide content-slide" aria-label="Preventable accident maneuvers">
+
+    <div class="slide-header">
+      <span class="header-label reveal">Safety Insight</span>
+      <h2 class="reveal">Preventable Accident Maneuvers</h2>
+    </div>
+
+    <div class="slide-body">
+      <div class="quote-block reveal">
+        <p>
+          Ensuring functioning safety technology and making safe driving decisions — like matching
+          speed to conditions and maintaining safe speed — can help reduce preventable incidents.
+        </p>
+        <p class="quote-source">FMCSA</p>
+      </div>
+
+      <div class="stat-callout-row reveal">
+        <div class="big-stat">&gt;⅔</div>
+        <p class="stat-callout-desc">
+          of linehaul preventable accidents involve personnel with
+          <strong>less than 2 years</strong> of driving experience.
+        </p>
+      </div>
+
+      <p class="source-cite reveal">Data period: June 1, 2025 – April 1, 2026</p>
+    </div>
+
+    <div class="fedex-mark" aria-hidden="true">
+      <span class="brand-word"><span class="fed">Fed</span><span class="ex">Ex</span></span>
+      <span class="brand-expr">Express</span>
+    </div>
+    <span class="conf-footer">May 2026 · Proprietary &amp; Confidential</span>
+
+  </section>
+
+
+  <!-- ============================================================
+       SLIDE 6 — SECTION: OTHER NEWS
+       ============================================================ -->
+  <section class="slide section-slide" aria-label="Other news section divider">
+
+    <span class="ghost decorative" aria-hidden="true">02</span>
+
+    <div class="section-inner">
+      <span class="section-eyebrow reveal">Section 02</span>
+      <div class="section-rule reveal" aria-hidden="true"></div>
+      <h2 class="reveal">Other News</h2>
+    </div>
+
+    <div class="fedex-mark on-dark" aria-hidden="true">
+      <span class="brand-word"><span class="fed">Fed</span><span class="ex">Ex</span></span>
+      <span class="brand-expr">Express</span>
+    </div>
+    <span class="conf-footer on-dark">May 2026 · Proprietary &amp; Confidential</span>
+
+  </section>
+
+
+  <!-- ============================================================
+       SLIDE 7 — TSPA FUEL MILEAGE SETTLEMENT
+       ============================================================ -->
+  <section class="slide content-slide" aria-label="TSPA fuel mileage settlement refresher">
+
+    <div class="slide-header">
+      <span class="header-label reveal">Other News</span>
+      <h2 class="reveal">TSPA Fuel Mileage Settlement Refresher</h2>
+    </div>
+
+    <div class="slide-body">
+      <ul class="bullet-list">
+        <li class="reveal">
+          <span class="bullet-dot" aria-hidden="true"></span>
+          <span>
+            Fuel mileage settlement <strong>fluctuates with the price of diesel fuel</strong>
+            and is indexed on a weekly basis.
+          </span>
+        </li>
+        <li class="reveal">
+          <span class="bullet-dot" aria-hidden="true"></span>
+          <span>
+            The settlement is based on <strong>static fuel tables</strong> included in the TSPA,
+            specifying the rate paid out based on the current cost of fuel.
+          </span>
+        </li>
+        <li class="reveal">
+          <span class="bullet-dot" aria-hidden="true"></span>
+          <span>
+            These tables account for <strong>higher or lower settlement rates</strong>
+            as the cost of fuel increases or decreases.
+          </span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="fedex-mark" aria-hidden="true">
+      <span class="brand-word"><span class="fed">Fed</span><span class="ex">Ex</span></span>
+      <span class="brand-expr">Express</span>
+    </div>
+    <span class="conf-footer">May 2026 · Proprietary &amp; Confidential</span>
+
+  </section>
+
+
+  <!-- ============================================================
+       SLIDE 8 — SAVE THE DATES
+       ============================================================ -->
+  <section class="slide content-slide" aria-label="Save the dates — SP Summit">
+
+    <div class="slide-header">
+      <span class="header-label reveal">Other News</span>
+      <h2 class="reveal">Save the Dates</h2>
+    </div>
+
+    <div class="slide-body">
+      <div class="info-card reveal">
+        <div class="info-card-head">
+          <div class="info-card-badge" aria-hidden="true">📅</div>
+          <div class="info-card-title">2026 FedEx Forward Service Provider Summit</div>
+        </div>
+        <div class="info-rows">
+          <div class="info-row">
+            <span class="info-row-label">Dates</span>
+            <span class="info-row-value">October 5–8, 2026</span>
+          </div>
+          <div class="info-row">
+            <span class="info-row-label">Location</span>
+            <span class="info-row-value">Hyatt Regency Orlando</span>
+          </div>
+          <div class="info-row">
+            <span class="info-row-label">Registration</span>
+            <span class="info-row-value">Opens June 2026</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fedex-mark" aria-hidden="true">
+      <span class="brand-word"><span class="fed">Fed</span><span class="ex">Ex</span></span>
+      <span class="brand-expr">Express</span>
+    </div>
+    <span class="conf-footer">May 2026 · Proprietary &amp; Confidential</span>
+
+  </section>
+
+
+  <!-- ============================================================
+       SLIDE 9 — Q&A
+       ============================================================ -->
+  <section class="slide closing-slide qa-slide" aria-label="Questions and answers">
+
+    <div class="bg-glow tl decorative" aria-hidden="true"></div>
+    <div class="bg-glow br decorative" aria-hidden="true"></div>
+
+    <div class="closing-inner">
+      <span class="closing-eyebrow reveal">Open Floor</span>
+      <div class="closing-rule reveal" aria-hidden="true"></div>
+      <h2 class="reveal">Questions?</h2>
+    </div>
+
+    <div class="fedex-mark on-dark" aria-hidden="true">
+      <span class="brand-word"><span class="fed">Fed</span><span class="ex">Ex</span></span>
+      <span class="brand-expr">Express</span>
+    </div>
+    <span class="conf-footer on-dark">May 2026 · Proprietary &amp; Confidential</span>
+
+  </section>
+
+
+  <!-- ============================================================
+       SLIDE 10 — THANK YOU
+       ============================================================ -->
+  <section class="slide closing-slide" aria-label="Thank you">
+
+    <div class="bg-glow tl decorative" aria-hidden="true"></div>
+    <div class="bg-glow br decorative" aria-hidden="true"></div>
+
+    <div class="closing-inner">
+      <span class="closing-eyebrow reveal">FedEx Express · Canada Linehaul</span>
+      <div class="closing-rule reveal" aria-hidden="true"></div>
+      <h2 class="reveal">Thank You</h2>
+      <p class="closing-sub reveal">Linehaul Service Provider Forum · May 2026</p>
+    </div>
+
+    <div class="fedex-mark on-dark" aria-hidden="true">
+      <span class="brand-word"><span class="fed">Fed</span><span class="ex">Ex</span></span>
+      <span class="brand-expr">Express</span>
+    </div>
+    <span class="conf-footer on-dark">May 2026 · Proprietary &amp; Confidential</span>
+
+  </section>
+
+
+  <script>
+    /* ============================================
+       SLIDE PRESENTATION CONTROLLER
+       Handles: keyboard nav, touch/swipe, scroll
+       progress, nav dots, intersection observer
+       ============================================ */
+    class SlidePresentation {
+      constructor() {
+        this.slides          = Array.from(document.querySelectorAll('.slide'));
+        this.total           = this.slides.length;
+        this.current         = 0;
+        this.navDotsEl       = document.getElementById('navDots');
+        this.progressBarEl   = document.getElementById('progressBar');
+
+        this.buildNavDots();
+        this.setupObserver();
+        this.setupKeyboard();
+        this.setupTouch();
+      }
+
+      /* Build one button per slide in the nav dots strip */
+      buildNavDots() {
+        this.navDotsEl.innerHTML = '';
+        this.slides.forEach((_, i) => {
+          const btn = document.createElement('button');
+          btn.className = 'nav-dot' + (i === 0 ? ' active' : '');
+          btn.setAttribute('aria-label', `Go to slide ${i + 1}`);
+          btn.addEventListener('click', () => this.go(i));
+          this.navDotsEl.appendChild(btn);
+        });
+      }
+
+      /* Sync active dot + on-dark class + progress bar */
+      syncUI(index) {
+        this.current = index;
+        const dots = this.navDotsEl.querySelectorAll('.nav-dot');
+        dots.forEach((d, i) => d.classList.toggle('active', i === index));
+
+        const slide = this.slides[index];
+        const dark  = slide.classList.contains('section-slide') ||
+                      slide.classList.contains('closing-slide') ||
+                      slide.classList.contains('qa-slide');
+        this.navDotsEl.classList.toggle('on-dark', dark);
+
+        const pct = ((index + 1) / this.total) * 100;
+        this.progressBarEl.style.width = pct + '%';
+      }
+
+      /* Smooth-scroll to slide by index */
+      go(index) {
+        if (index < 0 || index >= this.total) return;
+        this.slides[index].scrollIntoView({ behavior: 'smooth' });
+      }
+
+      /* IntersectionObserver: trigger .visible + sync UI */
+      setupObserver() {
+        const obs = new IntersectionObserver(entries => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              e.target.classList.add('visible');
+              const i = this.slides.indexOf(e.target);
+              if (i !== -1) this.syncUI(i);
+            }
+          });
+        }, { threshold: 0.5 });
+
+        this.slides.forEach(s => obs.observe(s));
+      }
+
+      /* Arrow / Space / Page keys */
+      setupKeyboard() {
+        document.addEventListener('keydown', e => {
+          if (e.target.getAttribute('contenteditable')) return;
+          switch (e.key) {
+            case 'ArrowDown': case 'ArrowRight': case ' ': case 'PageDown':
+              e.preventDefault(); this.go(this.current + 1); break;
+            case 'ArrowUp': case 'ArrowLeft': case 'PageUp':
+              e.preventDefault(); this.go(this.current - 1); break;
+            case 'Home':
+              e.preventDefault(); this.go(0); break;
+            case 'End':
+              e.preventDefault(); this.go(this.total - 1); break;
+          }
+        });
+      }
+
+      /* Swipe up/down */
+      setupTouch() {
+        let sy = 0, sx = 0;
+        document.addEventListener('touchstart', e => {
+          sy = e.touches[0].clientY;
+          sx = e.touches[0].clientX;
+        }, { passive: true });
+        document.addEventListener('touchend', e => {
+          const dy = sy - e.changedTouches[0].clientY;
+          const dx = sx - e.changedTouches[0].clientX;
+          if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 40) {
+            this.go(dy > 0 ? this.current + 1 : this.current - 1);
+          }
+        }, { passive: true });
+      }
+    }
+
+
+    /* ============================================
+       INLINE EDITOR
+       Toggle with: hover top-left corner, click
+       the edit button, or press E
+       Save: Ctrl+S exports a clean HTML file
+       ============================================ */
+    class InlineEditor {
+      constructor() {
+        this.isActive    = false;
+        this.toggle      = document.getElementById('editToggle');
+        this.banner      = document.getElementById('editBanner');
+        this.hotzone     = document.getElementById('editHotzone');
+        this.hideTimer   = null;
+
+        /* CSS selectors for all editable text nodes */
+        this.editSelectors = [
+          'h1', 'h2',
+          '.title-meta-text', '.title-conf', '.title-brand',
+          '.bullet-list li span:last-child',
+          '.slide-intro', '.source-cite',
+          '.section-eyebrow', '.header-label',
+          '.quote-block p', '.quote-source',
+          '.stat-callout-desc', '.big-stat',
+          '.stat-label', '.stat-sub', '.stat-num',
+          '.info-card-title', '.info-row-value',
+          '.closing-eyebrow', '.closing-sub',
+        ];
+
+        this.initHotzone();
+        this.initKeyboard();
+        this.initCtrlS();
+      }
+
+      /* Show edit button on hotzone hover with 400 ms grace period */
+      initHotzone() {
+        const show = () => { clearTimeout(this.hideTimer); this.toggle.classList.add('show'); };
+        const hide = () => {
+          this.hideTimer = setTimeout(() => {
+            if (!this.isActive) this.toggle.classList.remove('show');
+          }, 400);
+        };
+        this.hotzone.addEventListener('mouseenter', show);
+        this.hotzone.addEventListener('mouseleave', hide);
+        this.toggle.addEventListener('mouseenter', show);
+        this.toggle.addEventListener('mouseleave', hide);
+        this.toggle.addEventListener('click',  () => this.toggle_());
+        this.hotzone.addEventListener('click', () => this.toggle_());
+      }
+
+      /* E key — skip when user is already editing text */
+      initKeyboard() {
+        document.addEventListener('keydown', e => {
+          if ((e.key === 'e' || e.key === 'E') && !e.target.getAttribute('contenteditable')) {
+            this.toggle_();
+          }
+        });
+      }
+
+      /* Ctrl+S — save & export when in edit mode */
+      initCtrlS() {
+        document.addEventListener('keydown', e => {
+          if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+            e.preventDefault();
+            if (this.isActive) this.export_();
+          }
+        });
+      }
+
+      toggle_() {
+        this.isActive = !this.isActive;
+        document.body.classList.toggle('edit-active', this.isActive);
+        this.toggle.classList.toggle('active', this.isActive);
+        this.toggle.textContent = this.isActive ? '✓ Done' : '✏ Edit';
+        this.banner.classList.toggle('active', this.isActive);
+
+        this.editSelectors.forEach(sel => {
+          document.querySelectorAll(sel).forEach(el => {
+            this.isActive
+              ? el.setAttribute('contenteditable', 'true')
+              : el.removeAttribute('contenteditable');
+          });
+        });
+
+        if (!this.isActive) this.toggle.classList.remove('show');
+      }
+
+      /* Export a clean HTML file — strips all edit UI state first */
+      export_() {
+        const editables = Array.from(document.querySelectorAll('[contenteditable]'));
+        editables.forEach(el => el.removeAttribute('contenteditable'));
+        document.body.classList.remove('edit-active');
+        this.toggle.classList.remove('active', 'show');
+        this.banner.classList.remove('active');
+
+        const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+        /* Restore edit state so user can keep editing */
+        document.body.classList.add('edit-active');
+        this.toggle.classList.add('active');
+        this.banner.classList.add('active');
+        editables.forEach(el => el.setAttribute('contenteditable', 'true'));
+
+        const blob = new Blob([html], { type: 'text/html' });
+        const a    = document.createElement('a');
+        a.href     = URL.createObjectURL(blob);
+        a.download = 'LH-CAN-SP-Forum-May2026.html';
+        a.click();
+        URL.revokeObjectURL(a.href);
+      }
+    }
+
+    const presentation = new SlidePresentation();
+    const editor       = new InlineEditor();
+  </script>
+</body>
+</html>
