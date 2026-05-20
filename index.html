@@ -192,25 +192,28 @@
     .fedex-mark {
       position: absolute;
       bottom: clamp(0.875rem, 2.25vh, 1.875rem);
-      left: var(--pad);
+      left: clamp(1.25rem, 3vw, 2.5rem);
       z-index: 10;
-      line-height: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
     }
     .fedex-mark .brand-word {
-      font-size: clamp(0.85rem, 1.7vw, 1.3rem);
+      font-size: clamp(0.65rem, 1.1vw, 0.875rem);
       font-weight: 800;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
+      line-height: 1;
     }
     .fedex-mark .fed { color: var(--purple); }
     .fedex-mark .ex  { color: var(--orange); }
     .fedex-mark .brand-expr {
-      display: block;
-      font-size: clamp(0.42rem, 0.72vw, 0.56rem);
-      font-weight: 700;
-      letter-spacing: 0.22em;
+      font-size: clamp(0.38rem, 0.6vw, 0.48rem);
+      font-weight: 600;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: #aaa;
-      margin-top: 2px;
+      color: #bbb;
+      line-height: 1;
     }
     /* light variant for dark-background slides */
     .fedex-mark.on-dark .fed  { color: #c9a0ff; }
@@ -871,6 +874,24 @@
     }
     /* lift all direct children above the overlay */
     .slide-body.img-bg > * { position: relative; z-index: 1; }
+
+    /* Scale up text for the img-bg slide so it reads well against the photo */
+    .slide-body.img-bg .slide-intro {
+      font-size: clamp(1rem, 1.9vw, 1.4rem);
+      font-weight: 600;
+      color: #2a2a2a;
+    }
+    .slide-body.img-bg .bullet-list li {
+      font-size: clamp(0.95rem, 1.75vw, 1.3rem);
+      line-height: 1.55;
+    }
+    .slide-body.img-bg .bullet-list {
+      gap: clamp(0.6rem, 1.5vh, 1.25rem);
+    }
+    .slide-body.img-bg .bullet-dot {
+      width: 10px; height: 10px;
+      margin-top: 0.45em;
+    }
 
     /* =============================================
        SLIDE 4 — OVERALL SUMMARY STRIP
