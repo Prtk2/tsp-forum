@@ -824,7 +824,8 @@
     .d-val   { font-weight: 600; }
 
     /* animated rate bar */
-    .d-rate-wrap { display: flex; flex-direction: column; gap: 4px; min-width: clamp(80px,14vw,140px); padding-left: clamp(0.75rem, 1.75vw, 1.25rem); }
+    .d-rate-wrap { display: flex; flex-direction: column; gap: 4px; min-width: clamp(80px,14vw,140px); padding-left: clamp(1.5rem, 3vw, 2.5rem); }
+    .rate-col-hdr { padding-left: clamp(1.5rem, 3vw, 2.5rem) !important; }
     .d-rate-num  { font-weight: 700; }
     .d-bar-bg    { height: 4px; background: #eee; border-radius: 2px; position: relative; }
     .d-bar       {
@@ -1116,7 +1117,7 @@
               <th>District</th>
               <th class="r">Miles</th>
               <th class="r">Accidents</th>
-              <th>Rate &nbsp;<span style="font-weight:400;color:#bbb;font-size:0.85em">goal 0.58 ▾</span></th>
+              <th class="rate-col-hdr">Rate &nbsp;<span style="font-weight:400;color:#bbb;font-size:0.85em">goal 0.58 ▾</span></th>
               <th class="c">Attainment</th>
               <th class="c">Sparkline</th>
               <th class="c">Trend</th>
