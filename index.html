@@ -516,17 +516,47 @@
 
 
     /* =============================================
-       SLIDE 5 — FMCSA CALLOUT
-       Quote block + big stat
+       SLIDE 5 — PREVENTABLE ACCIDENT MANEUVERS
+       Two-column: KPI + quote left, bar chart right
        ============================================= */
+    .s5-body {
+      display: grid !important;
+      grid-template-columns: 1fr 1.5fr;
+      gap: clamp(1.5rem, 3.5vw, 3rem);
+      align-items: center;
+    }
+    .s5-insight {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.75rem, 1.8vh, 1.5rem);
+    }
+    .s5-kpi-card {
+      background: var(--purple);
+      border-radius: clamp(10px, 1.5vw, 16px);
+      padding: clamp(1rem, 2.5vw, 1.75rem);
+    }
+    .s5-kpi-num {
+      font-size: clamp(2.75rem, 6.5vw, 5.25rem);
+      font-weight: 800;
+      color: var(--orange);
+      letter-spacing: -0.05em;
+      line-height: 1;
+    }
+    .s5-kpi-label {
+      font-size: clamp(0.8rem, 1.5vw, 1.05rem);
+      color: rgba(255,255,255,0.82);
+      line-height: 1.45;
+      margin-top: clamp(0.35rem, 0.7vh, 0.55rem);
+    }
+    .s5-kpi-label strong { color: #fff; }
     .quote-block {
       background: var(--light-bg);
       border-left: 4px solid var(--purple);
-      padding: clamp(0.75rem, 2vw, 1.5rem) clamp(1rem, 2.5vw, 2rem);
+      padding: clamp(0.75rem, 2vw, 1.25rem) clamp(0.875rem, 2vw, 1.5rem);
       border-radius: 0 8px 8px 0;
     }
     .quote-block p {
-      font-size: var(--body-size);
+      font-size: clamp(0.75rem, 1.3vw, 0.95rem);
       color: #444;
       line-height: 1.6;
       font-style: italic;
@@ -537,27 +567,81 @@
       color: var(--purple);
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-top: clamp(0.4rem, 0.8vh, 0.6rem);
+      margin-top: clamp(0.35rem, 0.7vh, 0.5rem);
     }
-    .stat-callout-row {
+    /* bar chart */
+    .s5-chart-hdr {
+      font-size: var(--small-size);
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #aaa;
+      padding-bottom: clamp(0.3rem, 0.6vh, 0.5rem);
+      border-bottom: 1px solid #eee;
+      margin-bottom: clamp(0.3rem, 0.7vh, 0.6rem);
+    }
+    .s5-chart {
       display: flex;
+      flex-direction: column;
+      gap: clamp(0.38rem, 0.85vh, 0.65rem);
+    }
+    .s5-bar-row {
+      display: grid;
+      grid-template-columns: clamp(130px, 18vw, 200px) 1fr clamp(1.5rem, 2.5vw, 2rem);
       align-items: center;
-      gap: clamp(1rem, 2.5vw, 2rem);
+      gap: clamp(0.4rem, 1vw, 0.75rem);
+      opacity: 0;
+      transform: translateX(-14px);
+      transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
     }
-    .big-stat {
-      font-size: clamp(2.5rem, 7vw, 5.5rem);
-      font-weight: 800;
-      color: var(--orange);
-      letter-spacing: -0.05em;
-      line-height: 1;
-      flex-shrink: 0;
+    .slide.visible .s5-bar-row:nth-child(1) { opacity:1; transform:none; transition-delay:0.08s; }
+    .slide.visible .s5-bar-row:nth-child(2) { opacity:1; transform:none; transition-delay:0.16s; }
+    .slide.visible .s5-bar-row:nth-child(3) { opacity:1; transform:none; transition-delay:0.24s; }
+    .slide.visible .s5-bar-row:nth-child(4) { opacity:1; transform:none; transition-delay:0.32s; }
+    .slide.visible .s5-bar-row:nth-child(5) { opacity:1; transform:none; transition-delay:0.40s; }
+    .slide.visible .s5-bar-row:nth-child(6) { opacity:1; transform:none; transition-delay:0.48s; }
+    .slide.visible .s5-bar-row:nth-child(7) { opacity:1; transform:none; transition-delay:0.56s; }
+    .slide.visible .s5-bar-row:nth-child(8) { opacity:1; transform:none; transition-delay:0.64s; }
+    .slide.visible .s5-bar-row:nth-child(9) { opacity:1; transform:none; transition-delay:0.72s; }
+    .s5-bar-label {
+      font-size: clamp(0.55rem, 0.9vw, 0.72rem);
+      font-weight: 600;
+      color: #555;
+      text-align: right;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .stat-callout-desc {
-      font-size: var(--body-size);
-      color: #444;
-      line-height: 1.55;
+    .s5-bar-track {
+      height: clamp(7px, 1vh, 11px);
+      background: #f0f0f0;
+      border-radius: 3px;
+      position: relative;
+      overflow: hidden;
     }
-    .stat-callout-desc strong { color: var(--purple); font-weight: 700; }
+    .s5-bar-fill {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 0%;
+      border-radius: 3px;
+      background: var(--bc, #999);
+      transition: width 0.75s var(--ease);
+    }
+    .slide.visible .s5-bar-row:nth-child(1) .s5-bar-fill { width:var(--bw); transition-delay:0.12s; }
+    .slide.visible .s5-bar-row:nth-child(2) .s5-bar-fill { width:var(--bw); transition-delay:0.20s; }
+    .slide.visible .s5-bar-row:nth-child(3) .s5-bar-fill { width:var(--bw); transition-delay:0.28s; }
+    .slide.visible .s5-bar-row:nth-child(4) .s5-bar-fill { width:var(--bw); transition-delay:0.36s; }
+    .slide.visible .s5-bar-row:nth-child(5) .s5-bar-fill { width:var(--bw); transition-delay:0.44s; }
+    .slide.visible .s5-bar-row:nth-child(6) .s5-bar-fill { width:var(--bw); transition-delay:0.52s; }
+    .slide.visible .s5-bar-row:nth-child(7) .s5-bar-fill { width:var(--bw); transition-delay:0.60s; }
+    .slide.visible .s5-bar-row:nth-child(8) .s5-bar-fill { width:var(--bw); transition-delay:0.68s; }
+    .slide.visible .s5-bar-row:nth-child(9) .s5-bar-fill { width:var(--bw); transition-delay:0.76s; }
+    .s5-bar-count {
+      font-size: clamp(0.6rem, 1vw, 0.78rem);
+      font-weight: 700;
+      color: #666;
+      text-align: right;
+    }
 
 
     /* =============================================
@@ -1244,24 +1328,72 @@
       <h2 class="reveal">Preventable Accident Maneuvers</h2>
     </div>
 
-    <div class="slide-body">
-      <div class="quote-block reveal">
-        <p>
-          Ensuring functioning safety technology and making safe driving decisions — like matching
-          speed to conditions and maintaining safe speed — can help reduce preventable incidents.
-        </p>
-        <p class="quote-source">FMCSA</p>
+    <div class="slide-body s5-body">
+
+      <!-- ── Left: KPI card + FMCSA quote ── -->
+      <div class="s5-insight">
+        <div class="s5-kpi-card reveal">
+          <div class="s5-kpi-num">&gt;⅔</div>
+          <p class="s5-kpi-label">of preventable accidents involve personnel with <strong>less than 2 years</strong> of driving experience</p>
+        </div>
+        <div class="quote-block reveal">
+          <p>Ensuring functioning safety technology and making safe driving decisions — matching speed to conditions and maintaining safe speed — can help reduce preventable incidents.</p>
+          <p class="quote-source">FMCSA</p>
+        </div>
       </div>
 
-      <div class="stat-callout-row reveal">
-        <div class="big-stat">&gt;⅔</div>
-        <p class="stat-callout-desc">
-          of linehaul preventable accidents involve personnel with
-          <strong>less than 2 years</strong> of driving experience.
-        </p>
+      <!-- ── Right: Animated bar chart ── -->
+      <div>
+        <p class="s5-chart-hdr reveal">Accident Count by Maneuver &nbsp;·&nbsp; Jun 2025 – Apr 2026</p>
+        <div class="s5-chart">
+          <div class="s5-bar-row" style="--bw:100%; --bc:#FF6600">
+            <span class="s5-bar-label">Out of Control</span>
+            <div class="s5-bar-track"><div class="s5-bar-fill"></div></div>
+            <span class="s5-bar-count">8</span>
+          </div>
+          <div class="s5-bar-row" style="--bw:37.5%; --bc:#4D148C">
+            <span class="s5-bar-label">Sideswiped, Hit</span>
+            <div class="s5-bar-track"><div class="s5-bar-fill"></div></div>
+            <span class="s5-bar-count">3</span>
+          </div>
+          <div class="s5-bar-row" style="--bw:37.5%; --bc:#22c55e">
+            <span class="s5-bar-label">Turning</span>
+            <div class="s5-bar-track"><div class="s5-bar-fill"></div></div>
+            <span class="s5-bar-count">3</span>
+          </div>
+          <div class="s5-bar-row" style="--bw:25%; --bc:#ef4444">
+            <span class="s5-bar-label">Hit Stopped (Rear End)</span>
+            <div class="s5-bar-track"><div class="s5-bar-fill"></div></div>
+            <span class="s5-bar-count">2</span>
+          </div>
+          <div class="s5-bar-row" style="--bw:25%; --bc:#3b82f6">
+            <span class="s5-bar-label">Entering Traffic (No Stop)</span>
+            <div class="s5-bar-track"><div class="s5-bar-fill"></div></div>
+            <span class="s5-bar-count">2</span>
+          </div>
+          <div class="s5-bar-row" style="--bw:12.5%; --bc:#f59e0b">
+            <span class="s5-bar-label">Intersection (Broadside)</span>
+            <div class="s5-bar-track"><div class="s5-bar-fill"></div></div>
+            <span class="s5-bar-count">1</span>
+          </div>
+          <div class="s5-bar-row" style="--bw:12.5%; --bc:#0d9488">
+            <span class="s5-bar-label">Changed Lanes, Hit</span>
+            <div class="s5-bar-track"><div class="s5-bar-fill"></div></div>
+            <span class="s5-bar-count">1</span>
+          </div>
+          <div class="s5-bar-row" style="--bw:12.5%; --bc:#ec4899">
+            <span class="s5-bar-label">Hit Slowing / Stopping</span>
+            <div class="s5-bar-track"><div class="s5-bar-fill"></div></div>
+            <span class="s5-bar-count">1</span>
+          </div>
+          <div class="s5-bar-row" style="--bw:12.5%; --bc:#8b5cf6">
+            <span class="s5-bar-label">Jackknife</span>
+            <div class="s5-bar-track"><div class="s5-bar-fill"></div></div>
+            <span class="s5-bar-count">1</span>
+          </div>
+        </div>
       </div>
 
-      <p class="source-cite reveal">Data period: June 1, 2025 – April 1, 2026</p>
     </div>
 
     <div class="fedex-mark" aria-hidden="true">
