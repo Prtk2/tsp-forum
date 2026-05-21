@@ -46,7 +46,10 @@
     html {
       scroll-snap-type: y mandatory;
       scroll-behavior: smooth;
+      scrollbar-width: none;        /* Firefox */
+      -ms-overflow-style: none;     /* IE / Edge */
     }
+    html::-webkit-scrollbar { display: none; } /* Chrome / Safari */
     .slide {
       width: 100vw;
       height: 100vh;
